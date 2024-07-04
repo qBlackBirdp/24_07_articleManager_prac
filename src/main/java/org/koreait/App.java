@@ -33,10 +33,10 @@ public class App {
                 return;
             }
             String[] str = cmd.split(" ");
-            String first = str[0];
+            String fistWord = str[0];
             String id = str.length > 1 ? str[1] : "";
 
-            switch (first) {
+            switch (fistWord) {
                 case "write":
                     doWrite();
                     break;
@@ -44,14 +44,14 @@ public class App {
                     showList();
                     break;
                 case "delete":
-                    if (!id.isEmpty()) {
-                        int division = Integer.parseInt(id);
-                        doDelete(division);
-                    } else System.out.println("입력오류");
-
+                    if (id.isEmpty()) {
+                        System.out.println("입력오류");
+                    } else doDelete(Integer.parseInt(id));
                     break;
                 case "modify":
-                    doModify();
+                    if (id.isEmpty()) {
+                        System.out.println("입력오류");
+                    } else doModify(Integer.parseInt(id));
                     break;
                 default:
                     System.out.println("알 수 없는 명령어");
@@ -91,26 +91,38 @@ public class App {
     }
 
     private static void doDelete(int id) {
-        Article found = founArticle(id);
-        if (found == null) {
-            System.out.println("삭제할거 없어.");
-        } else {
-            System.out.println("== 게시물 삭제 ==");
-            System.out.printf("%d번 게시물 삭제\n", id);
+        Article found = foundArticle(id);
+        if (found != null) {
+            System.out.println("== 게시물삭제 ==");
             articles.remove(found);
-        }
+            System.out.printf("%d번 게시물삭제\n", id);
+        } else System.out.printf("%d번 게시물은 없어\n", id);
     }
 
-    private static void doModify() {
+    private static void doModify(int id) {
+        Article found = foundArticle(id);
+        if (found != null) {
+            System.out.println("== 게시물수정 ==");
+            System.out.print("제목 : ");
+            String title = sc.nextLine().trim();
+            System.out.print("내용 : ");
+            String body = sc.nextLine().trim();
+
+            found.setTitle(title);
+            found.setBody(body);
+
+            System.out.printf("%d번 게시물 수정\n", id);
+        } else System.out.printf("%d번 게시물은 없어\n", id);
     }
 
-    private static Article founArticle(int id) {
+
+
+
+    private static Article foundArticle(int id) {
         for (Article article : articles) {
             if (article.getId() == id) {
                 return article;
             }
-        }
-        return null;
+        }return null;
     }
-
 }
