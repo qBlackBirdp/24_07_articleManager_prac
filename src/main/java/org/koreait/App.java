@@ -72,6 +72,12 @@ public class App {
     private static void showList() {
         if (articles.isEmpty()) {
             System.out.println("게시물이 없어.");
+        } else {
+            System.out.println("번호     /       제목      /     내용      ");
+            for (int i = articles.size() - 1; i >= 0; i--) {
+                Article article = articles.get(i);
+                System.out.printf("%d      /        %s       /       %s      \n", article.getId(), article.getTitle(), article.getBody());
+            }
         }
     }
 
