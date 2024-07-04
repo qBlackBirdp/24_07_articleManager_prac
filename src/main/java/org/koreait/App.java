@@ -32,7 +32,11 @@ public class App {
                 System.out.println("명령어 입력해");
                 return;
             }
-            switch (cmd) {
+            String[] str = cmd.split(" ");
+            String first = str[0];
+            String id = str.length > 1 ? str[1] : "";
+
+            switch (first) {
                 case "write":
                     doWrite();
                     break;
@@ -40,7 +44,11 @@ public class App {
                     showList();
                     break;
                 case "delete":
-                    doDelete();
+                    if (!id.isEmpty()) {
+                        int division = Integer.parseInt(id);
+                        doDelete(division);
+                    } else System.out.println("입력오류");
+
                     break;
                 case "modify":
                     doModify();
@@ -71,9 +79,10 @@ public class App {
 
     private static void showList() {
         if (articles.isEmpty()) {
-            System.out.println("게시물이 없어.");
+            System.out.println("게시물 없어.");
         } else {
-            System.out.println("번호     /       제목      /     내용      ");
+            System.out.println("== 게시물 목록 ==");
+            System.out.println("번호     /       제목      /     내용");
             for (int i = articles.size() - 1; i >= 0; i--) {
                 Article article = articles.get(i);
                 System.out.printf("%d      /        %s       /       %s      \n", article.getId(), article.getTitle(), article.getBody());
@@ -81,11 +90,27 @@ public class App {
         }
     }
 
-    private static void doDelete() {
+    private static void doDelete(int id) {
+        Article found = founArticle(id);
+        if (found == null) {
+            System.out.println("삭제할거 없어.");
+        } else {
+            System.out.println("== 게시물 삭제 ==");
+            System.out.printf("%d번 게시물 삭제\n", id);
+            articles.remove(found);
+        }
     }
 
     private static void doModify() {
     }
 
+    private static Article founArticle(int id) {
+        for (Article article : articles) {
+            if (article.getId() == id) {
+                return article;
+            }
+        }
+        return null;
+    }
 
 }
