@@ -42,9 +42,13 @@ public class App {
                     showList();
                     break;
                 case "delete":
-                    if (id.isEmpty()) {
-                        System.out.println("게시물 번호 입력해");
-                    }else doDelete(Integer.parseInt(id));
+                    try {
+                        if (id.isEmpty()) {
+                            System.out.println("게시물 번호 입력해");
+                        }else doDelete(Integer.parseInt(id));
+                    } catch (NumberFormatException e) {
+                        System.out.println("게시물 번호 숫자로 입력해");
+                    }
                     break;
                 default:
                     System.out.println("그런 명령어 몰라");
