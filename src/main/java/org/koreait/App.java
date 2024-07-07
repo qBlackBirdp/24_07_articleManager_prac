@@ -37,9 +37,14 @@ public class App {
                     showList();
                     break;
                 case "delete":
-                    if (id.isEmpty()){
-                        System.out.println("게시물 번호 입력해.");
-                    } else doDelete(Integer.parseInt(id));
+                    try {
+                        if (id.isEmpty()){
+                            System.out.println("게시물 번호 입력해.");
+                            continue;
+                        } else doDelete(Integer.parseInt(id));
+                    } catch (NumberFormatException e) {
+                        System.out.println("게시물 '번호'를 입력해 ");
+                    }
                     break;
                 default:
                     System.out.println("없는 명령어");
