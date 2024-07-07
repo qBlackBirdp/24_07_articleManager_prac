@@ -1,13 +1,19 @@
 package org.koreait;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
+
     static Scanner sc;
     static int lastId;
+    static List<Article> articles;
+
     public App() {
         sc = new Scanner(System.in);
         lastId = 1;
+        articles = new ArrayList<>();
     }
 
     static void run() {
@@ -44,6 +50,8 @@ public class App {
         String body = sc.nextLine().trim();
 
         int id = lastId++;
+
+        articles.add(new Article(id, title, body));
 
         System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
     }
