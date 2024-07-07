@@ -25,19 +25,43 @@ public class App {
                 System.out.println("== 프로그램 종료 ==");
                 return;
             }
+            String[] str = cmd.split(" ");
+            String firstWord = str[0];
+            String id = str.length > 1 ? str[1] : "";
 
-            switch (cmd) {
+            switch (firstWord) {
                 case "write":
                     doWrite();
                     break;
                 case "list":
                     showList();
                     break;
+                case "delete":
+                    doDelete(Integer.parseInt(id));
+                    break;
                 default:
                     System.out.println("없는 명령어");
                     break;
             }
         }
+    }
+
+    private static void doDelete(int id) {
+        Article found = foundArticleId(id);
+        if (found != null) {
+            System.out.println("== 게시물 삭제 ==");
+            articles.remove(found);
+            System.out.printf("%d번 게시물 삭제\n", id);
+        } else System.out.printf("%d번 게시물 없어.\n", id);
+    }
+
+    private static Article foundArticleId(int id) {
+        for (Article article : articles) {
+            if (article.getId() == id) {
+                return article;
+            }
+        }
+        return null;
     }
 
     private static void showList() {
