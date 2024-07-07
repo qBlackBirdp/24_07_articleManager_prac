@@ -16,7 +16,7 @@ public class App {
         articles = new ArrayList<>();
     }
 
-    static void run () {
+    static void run() {
         System.out.println("== 프로그램 시작 ==");
         while (true) {
             System.out.print("명령어 : ");
@@ -27,14 +27,25 @@ public class App {
             } else if (cmd.isEmpty()) {
                 System.out.println("명령어를 입력해");
             }
-            
-            switch (cmd) {
-                case "write" :
+
+            String[] str = cmd.split(" ");
+            String firstWord = str[0];
+            String id = str.length > 1 ? str[1] : "";
+
+
+            switch (firstWord) {
+                case "write":
                     doWrite();
                     break;
-                    case "list" :
-                        showList();
-                        break;
+                case "list":
+                    showList();
+                    break;
+                case "delete":
+                    if (id.isEmpty()) {
+                        System.out.println("게시물 번호 입력해.");
+                    } else doDelete(Integer.parseInt(id));
+                    break;
+
                 default:
                     System.out.println("알 수 없는 명령어.");
                     break;
@@ -43,22 +54,22 @@ public class App {
 
     }
 
-    private static void showList() {
-        System.out.println("== 게시물 목록 ==");
+    private static void doDelete(int id) {
+        Article found = foundArticleId(id);
+        if (found != null) {
+            articles.remove(found);
+            System.out.println("== 게시물 삭제 ==");
+            System.out.printf("%d번 게시물 삭제\n", id);
+        } else System.out.printf("%d번 게시물 없음\n", id);
+    }
 
-        if (articles.isEmpty()) {
-            System.out.println("게시물 없어");
-        }else {
-            System.out.println("번호      /       제목      /       내용 ");
-
-            for (int i = articles.size() - 1; i >= 0; i--) {
-                Article article = articles.get(i);
-
-                System.out.printf("%d       /       %s      /       %s\n", article.getId(), article.getTitle(), article.getBody());
-
+    private static Article foundArticleId(int id) {
+        for (Article article : articles) {
+            if (article.getId() == id) {
+                return article;
             }
         }
-
+        return null;
     }
 
     private static void doWrite() {
@@ -73,5 +84,23 @@ public class App {
         articles.add(new Article(id, title, body));
 
         System.out.printf("%d번 글이 작성되었습니다.\n", id);
+    }
+
+    private static void showList() {
+        System.out.println("== 게시물 목록 ==");
+
+        if (articles.isEmpty()) {
+            System.out.println("게시물 없어");
+        } else {
+            System.out.println("번호      /       제목      /       내용 ");
+
+            for (int i = articles.size() - 1; i >= 0; i--) {
+                Article article = articles.get(i);
+
+                System.out.printf("%d       /       %s      /       %s\n", article.getId(), article.getTitle(), article.getBody());
+
+            }
+        }
+
     }
 }
