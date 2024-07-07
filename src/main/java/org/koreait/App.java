@@ -49,13 +49,39 @@ public class App {
                         System.out.println("게시물 번호 입력해.");
                     }
                     break;
+                case "modify":
+                    try {
+                        if (id.isEmpty()) {
+                            System.out.println("게시물 번호 입력해.");
+                        } else doModify(Integer.parseInt(id));
+                    } catch (NumberFormatException e) {
+                        System.out.println("게시물 번호 입력해.");
+                    }
+                    break;
 
                 default:
                     System.out.println("알 수 없는 명령어.");
                     break;
             }
         }
+    }
 
+    private static void doModify(int id) {
+        Article found = foundArticleId(id);
+        if (found != null) {
+            System.out.println("== 게시물 수정 ==");
+            System.out.println(" 제목 : " + found.getTitle());
+            System.out.println(" 내용 : " + found.getBody());
+            System.out.print("새 제목 : ");
+            String newTitle = sc.nextLine().trim();
+            System.out.print("새 내용 : ");
+            String newBody = sc.nextLine().trim();
+
+            found.setTitle(newTitle);
+            found.setBody(newBody);
+
+            System.out.printf("%d번 게시물 수정\n", id);
+        } else System.out.printf("%d번 게시물 없음\n", id);
     }
 
     private static void doDelete(int id) {
