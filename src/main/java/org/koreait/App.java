@@ -32,9 +32,30 @@ public class App {
                 case "write" :
                     doWrite();
                     break;
+                    case "list" :
+                        showList();
+                        break;
                 default:
                     System.out.println("알 수 없는 명령어.");
                     break;
+            }
+        }
+
+    }
+
+    private static void showList() {
+        System.out.println("== 게시물 목록 ==");
+
+        if (articles.isEmpty()) {
+            System.out.println("게시물 없어");
+        }else {
+            System.out.println("번호      /       제목      /       내용 ");
+
+            for (int i = articles.size() - 1; i >= 0; i--) {
+                Article article = articles.get(i);
+
+                System.out.printf("%d       /       %s      /       %s\n", article.getId(), article.getTitle(), article.getBody());
+
             }
         }
 
