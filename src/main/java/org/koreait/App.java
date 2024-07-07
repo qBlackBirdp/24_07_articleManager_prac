@@ -42,7 +42,9 @@ public class App {
                     showList();
                     break;
                 case "delete":
-                    doDelete(Integer.parseInt(id));
+                    if (id.isEmpty()) {
+                        System.out.println("게시물 번호 입력해");
+                    }else doDelete(Integer.parseInt(id));
                     break;
                 default:
                     System.out.println("그런 명령어 몰라");
