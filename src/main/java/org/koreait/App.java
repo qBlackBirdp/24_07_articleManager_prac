@@ -28,12 +28,28 @@ public class App {
                 return;
             } else if (cmd.isEmpty()) System.out.println("명령어 똑바로 입력해");
 
-            switch (cmd) {
+            String[] strs = cmd.split(" ");
+            String firstWord = strs[0];
+            String secondWord = strs.length > 1 ? strs[1] : "";
+            String id = strs.length > 2 ? strs[2] : "";
+
+            switch (firstWord + " " + secondWord) {
                 case "article write":
                     doWrite();
                     break;
                 case "article list":
                     showList();
+                    break;
+                case "article delete":
+                    try {
+                        if (id.isEmpty()) {
+                            System.out.println("삭제할 게시물 번호 입력해");
+                            continue;
+                        } else doDelete(Integer.parseInt(id));
+                    } catch (NumberFormatException e) {
+                        System.out.println("명령어에 번호 누락 확인해봐");
+                    }
+
                     break;
                 default:
                     System.out.println("명령어 입력 오류");
@@ -42,14 +58,36 @@ public class App {
         }
     }
 
+    private static void doDelete(int id) {
+        Article found = foundArticleId(id);
+        if (found == null) {
+            System.out.printf("%d번 게시물 없어\n", id);
+        } else {
+            System.out.println("== 게시물 삭제 ==");
+            articles.remove(found);
+            System.out.printf("%d번 게시물 삭제\n", id);
+        }
+    }
+
+    private static Article foundArticleId(int id) {
+        for (Article article : articles) {
+            if (article.getId() == id) {
+                return article;
+            }
+        }
+        return null;
+    }
+
     private static void showList() {
         if (articles.isEmpty()) {
             System.out.println("게시물 없어");
         } else {
+            System.out.println("== 게시물 목록 ==");
             System.out.println("번호      /       제목      /       내용");
             for (int i = articles.size() - 1; i >= 0; i--) {
                 articles.get(i);
-                System.out.printf("%d       /       %s      /       %s\n", i, articles.get(i).getTitle(), articles.get(i).getBody());
+                Article article = articles.get(i);
+                System.out.printf("%d       /       %s      /       %s\n", article.getId(), article.getTitle(), article.getBody());
                 System.out.println("=".repeat(50));
             }
         }
