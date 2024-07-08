@@ -4,11 +4,19 @@ public class Article {
     private String title;
     private String body;
     private int id;
-
-    public Article(int id, String title, String body) {
+    public Article(String title, String body, int id) {
         this.title = title;
         this.body = body;
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", id=" + id +
+                '}';
     }
 
     public String getTitle() {
@@ -33,14 +41,5 @@ public class Article {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                ", id=" + id +
-                '}';
     }
 }
