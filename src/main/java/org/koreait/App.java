@@ -23,8 +23,9 @@ public class App {
             System.out.print("명령어: ");
             String cmd = sc.nextLine().trim();
 
-            if (cmd.equals("article exit")) {
+            if (cmd.equals("exit")) {
                 System.out.println("== 프로그램 종료 ==");
+                sc.close();
                 return;
             } else if (cmd.isEmpty()) System.out.println("명령어 똑바로 입력해");
 
@@ -48,13 +49,45 @@ public class App {
                         } else doDelete(Integer.parseInt(id));
                     } catch (NumberFormatException e) {
                         System.out.println("명령어에 번호 누락 확인해봐");
+                        continue;
                     }
-
                     break;
+                case "article modify":
+                    try {
+                        if (id.isEmpty()) {
+                            System.out.println("수정할 게시물 번호 입력해");
+                            continue;
+                        } else doModify(Integer.parseInt(id));
+                    } catch (NumberFormatException e) {
+                        System.out.println("명령어에 번호 누락 확인해봐");
+                        continue;
+                    }
+                    break;
+
                 default:
                     System.out.println("명령어 입력 오류");
                     break;
             }
+        }
+    }
+
+    private static void doModify(int id) {
+        Article found = foundArticleId(id);
+        if (found == null) {
+            System.out.printf("%d번 게시물 없어\n", id);
+        } else {
+            System.out.println("== 게시물 수정 ==");
+            System.out.println("제목 : " + found.getTitle());
+            System.out.println("내용 : " + found.getBody());
+            System.out.print("새 제목 :");
+            String newTitle = sc.nextLine().trim();
+            System.out.print("새 내용 : ");
+            String newBody = sc.nextLine().trim();
+
+            found.setTitle(newTitle);
+            found.setBody(newBody);
+
+            System.out.printf("%d번 게시물이 수정됨.\n", id);
         }
     }
 
